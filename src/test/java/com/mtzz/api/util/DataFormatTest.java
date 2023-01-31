@@ -1,7 +1,7 @@
 package com.mtzz.api.util;
 
 import com.mtzz.api.application.util.DataFormat;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -20,9 +20,9 @@ public class DataFormatTest extends DataFormat
         cpf = number_format(cpf);
         number_phone = number_format(number_phone);
 
-        Assert.assertTrue(cep.matches("[0-9]*"));
-        Assert.assertTrue(cpf.matches("[0-9]*"));
-        Assert.assertTrue(number_phone.matches("[0-9]*"));
+        assertTrue(cep.matches("[0-9]*"));
+        assertTrue(cpf.matches("[0-9]*"));
+        assertTrue(number_phone.matches("[0-9]*"));
     }
 
     @Test
@@ -36,9 +36,9 @@ public class DataFormatTest extends DataFormat
         country = name_format(country);
         street = name_format(street);
 
-        Assert.assertTrue(name.matches("[A-Z, ]+"));
-        Assert.assertTrue(country.matches("[A-Z]+"));
-        Assert.assertTrue(street.matches("[A-Z, ]+"));
+        assertTrue(name.matches("[A-Z, ]+"));
+        assertTrue(country.matches("[A-Z]+"));
+        assertTrue(street.matches("[A-Z, ]+"));
     }
 
     @Test
