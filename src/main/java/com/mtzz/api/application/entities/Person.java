@@ -19,20 +19,20 @@ public class Person
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Long person_id;
+    private Long personId;
 
     @Column(nullable = false)
     private String name;
 
     @Column(name = "birth_date", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date birth_date;
+    private Date birthDate;
 
     @JsonIgnore
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
     private List<Address> addresses = new ArrayList<>();
 
     @JsonIgnore
-    private Long primary_address;
+    private Long primaryAddress;
 }
 

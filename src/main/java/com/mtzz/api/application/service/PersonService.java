@@ -19,27 +19,27 @@ import java.util.List;
 public class PersonService
 {
     @Autowired
-    private PersonRepository person_repository;
+    private PersonRepository personRepository;
 
     @Autowired
-    private AddressRepository address_repository;
+    private AddressRepository addressRepository;
 
 
-    public Person add_person(Person person_request){
-        if (person_request.getName().equals(""))
+    public Person addPerson(Person personRequest){
+        if (personRequest.getName().equals(""))
         {
             throw new PersonCreationException("Unable to create a person with blank name");
         }
-        else if(person_request.getBirth_date().equals(""))
+        else if(personRequest.getBirthDate().equals(""))
         {
             throw new PersonCreationException("Unable to create a person with blank date");
         }
-        return person_repository.save(person_request);
+        return personRepository.save(personRequest);
     }
 
-    public void update_data_person(PersonRequest person_request_data, Long person_id)
+    public void updateDataPerson(PersonRequest person_request_data, Long person_id)
     {
-        Person person = person_repository.findById(person_id).orElseThrow(
+        Person person = personRepository.findById(person_id).orElseThrow(
                 () -> new PersonNotFoundException(person_id));
         person.setName(DataFormat.name_format(person_request_data.getName()));
 
@@ -47,42 +47,42 @@ public class PersonService
         {
             throw new DataUpdateException("Unable to update to a blank name or null.");
         }
-        else if(person_request_data.getBirth_date() != null)
+        else if(person_request_data.getBirthDate() != null)
         {
             throw new DataUpdateException("Unable to update a person's date of birth");
         }
 
-        person_repository.save(person);
+        personRepository.save(person);
     }
 
-    public Object findBy_id(Long person_id)
+    public Object findById(Long personId)
     {
         //If the person has no registered address, only his id, name and birthday will be launched as a search.
-        Person person = person_repository.findById(person_id).orElseThrow(
-                () -> new PersonNotFoundException(person_id));
-        if(person.getPrimary_address() == null)
+        Person person = personRepository.findById(personId).orElseThrow(
+                () -> new PersonNotFoundException(personId));
+        if(person.getPrimaryAddress() == null)
         {
-            return PersonMapper.response_min_return(person);
+            return PersonMapper.responseMinReturn(person);
         }
-        return PersonMapper.response_full_return(person);
+        return PersonMapper.responseFullReturn(person);
     }
 
     public List<Person> find_all()
     {
-        List<Person> persons = person_repository.findAll();
+        List<Person> persons = personRepository.findAll();
         if(persons.isEmpty())
         {
             throw new EmptyCollectionException(persons);
         }
-        return person_repository.findAll();
+        return personRepository.findAll();
     }
 
-    public void enter_primary_address(Long person_id, Long pa_id)
+    public void enterPrimaryAddress(Long personId, Long paId)
     {
         //instantiated the address just to check if the country exists
-        Address address = address_repository.findById(pa_id).orElseThrow(() -> new AddressNotFoundException(pa_id));
-        Person person = person_repository.findById(person_id).orElseThrow(() -> new PersonNotFoundException(person_id));
-        person.setPrimary_address(pa_id);
-        person_repository.save(person);
+        Address address = addressRepository.findById(paId).orElseThrow(() -> new AddressNotFoundException(paId));
+        Person person = personRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
+        person.setPrimaryAddress(paId);
+        personRepository.save(person);
     }
 }

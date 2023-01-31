@@ -12,10 +12,10 @@ import lombok.Setter;
 public class AddressRequest extends DataFormat
 {
     private Long id;
-    private String street_address;
+    private String streetAddress;
     private String cep;
     private String number;
     private String city;
-    private Long person_id;
+    private Long personId;
 }
 

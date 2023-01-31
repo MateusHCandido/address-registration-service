@@ -20,30 +20,30 @@ import java.util.List;
 public class AddressService extends DataFormat
 {
     @Autowired
-    AddressRepository address_repository;
+    AddressRepository addressRepository;
 
     @Autowired
-    PersonRepository person_repository;
+    PersonRepository personRepository;
 
 
-    public Address add_address(AddressRequest address_request)
+    public Address addAddress(AddressRequest addressRequest)
     {
-        Person person = person_repository.findById(address_request.getPerson_id())
-                .orElseThrow(() -> new PersonNotFoundException(address_request.getPerson_id()));
-        Address address = AddressMapper.toAddress(address_request);
+        Person person = personRepository.findById(addressRequest.getPersonId())
+                .orElseThrow(() -> new PersonNotFoundException(addressRequest.getPersonId()));
+        Address address = AddressMapper.toAddress(addressRequest);
         address.setPerson(person);
         if(person.getAddresses().isEmpty())
         {
             //if the person has no registered address, the first registered address will be the main
-            person.setPrimary_address(1L);
-            person_repository.save(person);
+            person.setPrimaryAddress(1L);
+            personRepository.save(person);
         }
-        return address_repository.save(address);
+        return addressRepository.save(address);
     }
 
-    public List<Address> persons_addresses(Long person_id){
-        Person person = person_repository.findById(person_id).orElseThrow(() -> new PersonNotFoundException(person_id));
-        List<Address> addresses = address_repository.findAddressByPerson(person);
+    public List<Address> persons_addresses(Long personId){
+        Person person = personRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
+        List<Address> addresses = addressRepository.findAddressByPerson(person);
         if(addresses.isEmpty())
         {
             throw new EmptyCollectionException("The person does not have registered addresses");
@@ -51,8 +51,8 @@ public class AddressService extends DataFormat
         return addresses;
     }
 
-    public Address findBy_id(Long address_id){
-        return address_repository.findById(address_id)
-                .orElseThrow(() -> new AddressNotFoundException(address_id));
+    public Address findBy_id(Long addressId){
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new AddressNotFoundException(addressId));
     }
 }

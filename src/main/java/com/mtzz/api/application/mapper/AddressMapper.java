@@ -9,8 +9,8 @@ public class AddressMapper extends DataFormat
     public static Address toAddress(AddressRequest request)
     {
         Address address = new Address();
-        address.setAddress_id(request.getId());
-        address.setStreet_address(name_format(request.getStreet_address()));
+        address.setAddressId(request.getId());
+        address.setStreetAddress(name_format(request.getStreetAddress()));
         address.setCep(number_format(request.getCep()));
         address.setNumber(number_format(request.getNumber()));
         address.setCity(name_format(request.getCity()));

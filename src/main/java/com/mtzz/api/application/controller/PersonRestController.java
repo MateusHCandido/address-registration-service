@@ -18,42 +18,42 @@ import java.util.List;
 public class PersonRestController
 {
     @Autowired
-    private PersonService person_service;
+    private PersonService personService;
 
 
     @SneakyThrows
     @PostMapping(path = "/add")
-    public ResponseEntity<Person> add_person(@RequestBody PersonRequest person_request)
+    public ResponseEntity<Person> addPerson(@RequestBody PersonRequest person_request)
     {
          Person person = PersonMapper.toPerson(person_request);
-         person_service.add_person(person);
+         personService.addPerson(person);
          return ResponseEntity.status(HttpStatus.CREATED).body(person);
     }
 
     @GetMapping(path = "/find-by-id/{person_id}")
-    public ResponseEntity<Object> findBy_id(@PathVariable Long person_id)
+    public ResponseEntity<Object> findById(@PathVariable Long person_id)
     {
-        Object person_localized = person_service.findBy_id(person_id);
+        Object person_localized = personService.findById(person_id);
         return ResponseEntity.ok().body(person_localized);
     }
 
     @GetMapping
-    public ResponseEntity<List<Person>> find_all()
+    public ResponseEntity<List<Person>> findAll()
     {
-        return ResponseEntity.ok(person_service.find_all());
+        return ResponseEntity.ok(personService.find_all());
     }
 
     @PutMapping(path = "/update-data/{person_id}")
-    public ResponseEntity<Person> update_person_data(@PathVariable Long person_id, @RequestBody PersonRequest personRequest)
+    public ResponseEntity<Person> updatePersonData(@PathVariable Long person_id, @RequestBody PersonRequest personRequest)
     {
-        person_service.update_data_person(personRequest, person_id);
+        personService.updateDataPerson(personRequest, person_id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(path = "/person-id/{person_id}/address-id/{pa_id}")
-    public ResponseEntity<Person> enter_primary_address(@PathVariable Long person_id, @PathVariable Long pa_id)
+    public ResponseEntity<Person> enterPrimaryAddress(@PathVariable Long person_id, @PathVariable Long pa_id)
     {
-        person_service.enter_primary_address(person_id, pa_id);
+        personService.enterPrimaryAddress(person_id, pa_id);
         return ResponseEntity.noContent().build();
     }
 

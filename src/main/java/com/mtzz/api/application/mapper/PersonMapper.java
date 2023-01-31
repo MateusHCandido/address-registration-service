@@ -13,26 +13,26 @@ public class PersonMapper extends DataFormat {
     public static Person toPerson(PersonRequest request) {
         Person person = new Person();
         person.setName(name_format(request.getName()));
-        person.setBirth_date(date_format(request.getBirth_date()));
+        person.setBirthDate(date_format(request.getBirthDate()));
         return person;
     }
 
-    public static PersonRequest response_min_return(Person response)
+    public static PersonRequest responseMinReturn(Person response)
     {
         PersonRequest person = new PersonRequest();
-        person.setPerson_id(response.getPerson_id());
+        person.setPersonId(response.getPersonId());
         person.setName(name_format(response.getName()));
-        person.setBirth_date(String.valueOf(response.getBirth_date()));
+        person.setBirthDate(String.valueOf(response.getBirthDate()));
         return person;
     }
 
-    public static PersonResponse response_full_return(Person response)
+    public static PersonResponse responseFullReturn(Person response)
     {
         PersonResponse person = new PersonResponse();
-        person.setPerson_id(response.getPerson_id());
+        person.setPersonId(response.getPersonId());
         person.setName(response.getName());
-        person.setBirth_date(String.valueOf(response.getBirth_date()));
-        person.setPrimary_address(response.getPrimary_address());
+        person.setBirthDate(String.valueOf(response.getBirthDate()));
+        person.setPrimaryAddress(response.getPrimaryAddress());
         person.setAddresses(response.getAddresses());
         return person;
     }

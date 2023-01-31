@@ -12,8 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PersonRequest
 {
-    private Long person_id;
+    private Long personId;
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private String birth_date;
+    private String birthDate;
 }

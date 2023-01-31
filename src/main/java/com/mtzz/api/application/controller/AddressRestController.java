@@ -16,20 +16,20 @@ import java.util.List;
 public class AddressRestController
 {
     @Autowired
-    private AddressService address_service;
+    private AddressService addressService;
 
 
     @PostMapping(path = "/add")
-    public ResponseEntity<Address> add_address(@RequestBody AddressRequest addressRequest)
+    public ResponseEntity<Address> addAddress(@RequestBody AddressRequest addressRequest)
     {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(address_service.add_address(addressRequest));
+                .body(addressService.addAddress(addressRequest));
     }
 
 
     @GetMapping(path = "/person-id/{person_id}")
-    public ResponseEntity<List<Address>> persons_address(@PathVariable Long person_id)
+    public ResponseEntity<List<Address>> personsAddress(@PathVariable Long person_id)
     {
-        return ResponseEntity.ok().body(address_service.persons_addresses(person_id));
+        return ResponseEntity.ok().body(addressService.persons_addresses(person_id));
     }
 }

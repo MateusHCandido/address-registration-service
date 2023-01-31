@@ -17,10 +17,10 @@ public class Address
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Long address_id;
+    private Long addressId;
 
     @Column(nullable = false, length = 50)
-    private String street_address;
+    private String streetAddress;
 
     @Column(nullable = false, length = 8)
     private String cep;
