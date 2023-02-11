@@ -57,7 +57,8 @@ public class ResourceExceptionHandler
     }
 
     @ExceptionHandler(AddressNotFoundException.class)
-    public ResponseEntity<StandardError> address_not_found(AddressNotFoundException error, HttpServletRequest request) {
+    public ResponseEntity<StandardError> address_not_found(AddressNotFoundException error, HttpServletRequest request)
+    {
         String error_message = "Resource not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError standardError = new StandardError(Instant.now(), status.value(), error_message,
@@ -65,5 +66,13 @@ public class ResourceExceptionHandler
         return ResponseEntity.status(status).body(standardError);
     }
 
-
+    @ExceptionHandler(AddressCreationFailureException.class)
+    public ResponseEntity<StandardError> address_creation_failure(AddressCreationFailureException error, HttpServletRequest request)
+    {
+        String error_message = "Address creation failure";
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        StandardError standardError = new StandardError(Instant.now(), status.value(), error_message,
+                error.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(standardError);
+    }
 }

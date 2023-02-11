@@ -6,9 +6,7 @@ import com.mtzz.api.application.entities.Person;
 import com.mtzz.api.application.mapper.AddressMapper;
 import com.mtzz.api.application.repository.AddressRepository;
 import com.mtzz.api.application.repository.PersonRepository;
-import com.mtzz.api.application.service.exception.AddressNotFoundException;
-import com.mtzz.api.application.service.exception.EmptyCollectionException;
-import com.mtzz.api.application.service.exception.PersonNotFoundException;
+import com.mtzz.api.application.service.exception.*;
 import com.mtzz.api.application.util.DataFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,25 +18,32 @@ import java.util.List;
 public class AddressService extends DataFormat
 {
     @Autowired
-    AddressRepository addressRepository;
+    private AddressRepository addressRepository;
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
+
+    public Boolean checkIfAddressExists(AddressRequest addressRequest) {
+        Address searchReturn = addressRepository.findByCityAndCepAndStreetAddressAndNumber
+                                                        (addressRequest.getCity(), addressRequest.getCep(),
+                                                         addressRequest.getStreetAddress(), addressRequest.getNumber());
+        if(searchReturn != null)
+        {
+            throw new ExistingAddressException("The displayed address already exists");
+        }
+        return true;
+    }
 
     public Address addAddress(AddressRequest addressRequest)
     {
-        Person person = personRepository.findById(addressRequest.getPersonId())
-                .orElseThrow(() -> new PersonNotFoundException(addressRequest.getPersonId()));
         Address address = AddressMapper.toAddress(addressRequest);
-        address.setPerson(person);
-        if(person.getAddresses().isEmpty())
+        if(checkIfAddressExists(addressRequest))
         {
-            //if the person has no registered address, the first registered address will be the main
-            person.setPrimaryAddress(1L);
-            personRepository.save(person);
+            addressRepository.save(address);
+            return address;
         }
-        return addressRepository.save(address);
+        throw new AddressCreationFailureException("Unexpected address creation failure");
     }
 
     public List<Address> persons_addresses(Long personId){

@@ -9,4 +9,6 @@ import java.util.List;
 public interface AddressRepository extends JpaRepository<Address, Long>
 {
     List<Address> findAddressByPerson(Person person);
+
+    Address findByCityAndCepAndStreetAddressAndNumber(String city, String cep, String streetAddress, String number);
 }
