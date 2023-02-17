@@ -84,6 +84,8 @@ public class AddressServiceTest {
                 .thenReturn(null);
         boolean validation = service.checkIfAddressExists(addressRequest);
         Address address = service.addAddress(addressRequest);
+        verify(addressRepository, times(2)).findByCityAndCepAndStreetAddressAndNumber(addressRequest.getCity(), addressRequest.getCep()
+                ,addressRequest.getStreetAddress(), addressRequest.getNumber());
         Assertions.assertTrue(validation);
         Assertions.assertNotNull(address);
     }
@@ -98,6 +100,9 @@ public class AddressServiceTest {
                 ,addressRequest.getStreetAddress(), addressRequest.getNumber()))
                 .thenReturn(address);
         when(service.addAddress(addressRequest)).thenReturn(address);
+        verify(addressRepository, times(2)).findByCityAndCepAndStreetAddressAndNumber(addressRequest.getCity(), addressRequest.getCep()
+                ,addressRequest.getStreetAddress(), addressRequest.getNumber());
+        verify(service,times(2)).addAddress(addressRequest);
         Address failAddress = service.addAddress(addressRequest);
 
 
