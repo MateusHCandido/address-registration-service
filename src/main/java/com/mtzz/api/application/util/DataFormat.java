@@ -3,6 +3,7 @@ package com.mtzz.api.application.util;
 
 import com.mtzz.api.application.util.exception.NameFormatException;
 
+import java.rmi.UnexpectedException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,10 +30,11 @@ public class DataFormat
                         name = name.toUpperCase();
                         name = name.replaceAll("[^A-Z]+", " ");
                 }
-                catch (NullPointerException pointerException)
+                catch (NullPointerException nullPointerException)
                 {
                         throw new NameFormatException("Unable to update a null name");
                 }
+
 
                 return name.trim().replaceAll("\\s+", " ");
         }
