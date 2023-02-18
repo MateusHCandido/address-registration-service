@@ -24,8 +24,11 @@ public class PersonService
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private AddressService addressService;
 
-    public Person addPerson(Person personRequest){
+
+    public Person addPerson(PersonRequest personRequest){
         if (personRequest.getName().equals(""))
         {
             throw new PersonCreationException("Unable to create a person with blank name");
@@ -34,24 +37,32 @@ public class PersonService
         {
             throw new PersonCreationException("Unable to create a person with blank date");
         }
-        return personRepository.save(personRequest);
+        Person person = PersonMapper.toPerson(personRequest);
+        personRepository.save(person);
+        return person;
     }
 
-    public void updateDataPerson(PersonRequest person_request_data, Long person_id)
+    public void updateDataPerson(PersonRequest personRequestData, Long personId)
     {
-        Person person = personRepository.findById(person_id).orElseThrow(
-                () -> new PersonNotFoundException(person_id));
-        person.setName(DataFormat.name_format(person_request_data.getName()));
+        Person person = personRepository.findById(personId).orElseThrow(
+                () -> new PersonNotFoundException(personId));
+        try
+        {
+            if(personRequestData.getName().equals(""))
+            {
+                throw new DataUpdateException("Unable to update to a blank name or null.");
+            }
+            else if(personRequestData.getBirthDate() != null)
+            {
+                throw new DataUpdateException("Unable to update a person's date of birth");
+            }
 
-        if(person.getName().equals(""))
+        }catch (NullPointerException nullPointerException)
         {
             throw new DataUpdateException("Unable to update to a blank name or null.");
         }
-        else if(person_request_data.getBirthDate() != null)
-        {
-            throw new DataUpdateException("Unable to update a person's date of birth");
-        }
 
+        person.setName(DataFormat.name_format(personRequestData.getName()));
         personRepository.save(person);
     }
 
@@ -67,17 +78,29 @@ public class PersonService
         return PersonMapper.responseFullReturn(person);
     }
 
-    public List<Person> find_all()
+    public void addAddressInPerson(Long personId, Long addressId)
+    {
+        Person person = personRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> new AddressNotFoundException(addressId));
+        if(person.getPrimaryAddress() == null)
+        {
+            person.setPrimaryAddress(address.getAddressId());
+        }
+        person.getAddresses().add(address);
+        personRepository.save(person);
+    }
+
+    public List<Person> findAll()
     {
         List<Person> persons = personRepository.findAll();
         if(persons.isEmpty())
         {
             throw new EmptyCollectionException(persons);
         }
-        return personRepository.findAll();
+        return persons;
     }
 
-    public void enterPrimaryAddress(Long personId, Long paId)
+    public void enterMainAddress(Long personId, Long paId)
     {
         //instantiated the address just to check if the country exists
         Address address = addressRepository.findById(paId).orElseThrow(() -> new AddressNotFoundException(paId));
