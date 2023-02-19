@@ -22,6 +22,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -171,6 +174,19 @@ public class PersonServiceTest
         Object personNotFound = service.findById(1L); //object never registered in the bank
     }
 
+
+    @Test
+    public void should_return_list_of_people()
+    {
+        PersonRequest personRequest = PersonBuilder.generatePerson().now();
+        Person person = service.addPerson(personRequest);
+
+        when(personRepository.findAll()).thenReturn(new ArrayList(Collections.singleton(person)));
+        List<Person> personList = service.findAll();
+
+        boolean validation = !personList.isEmpty();
+        assertTrue(validation);
+    }
 
     @Test(expected = EmptyCollectionException.class)
     public void should_return_empty_list_of_people()
