@@ -6,7 +6,6 @@ import com.mtzz.api.application.entities.Address;
 import com.mtzz.api.application.entities.Person;
 import com.mtzz.api.application.repository.AddressRepository;
 import com.mtzz.api.application.repository.PersonRepository;
-import com.mtzz.api.application.service.exception.AddressCreationFailureException;
 import com.mtzz.api.application.service.exception.AddressNotFoundException;
 import com.mtzz.api.application.service.exception.EmptyCollectionException;
 import com.mtzz.api.application.service.exception.ExistingAddressException;
@@ -23,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
