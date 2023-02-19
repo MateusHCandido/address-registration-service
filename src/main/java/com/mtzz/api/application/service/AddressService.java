@@ -7,18 +7,18 @@ import com.mtzz.api.application.mapper.AddressMapper;
 import com.mtzz.api.application.repository.AddressRepository;
 import com.mtzz.api.application.repository.PersonRepository;
 import com.mtzz.api.application.service.exception.*;
-import com.mtzz.api.application.util.DataFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
-public class AddressService extends DataFormat
-{
+public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private PersonService personService;
 
     @Autowired
     private PersonRepository personRepository;
@@ -46,17 +46,18 @@ public class AddressService extends DataFormat
         throw new AddressCreationFailureException("Unexpected address creation failure");
     }
 
-    public List<Address> persons_addresses(Long personId){
+    //standby
+    public List<Address> personsAddresses(Long personId){
         Person person = personRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
         List<Address> addresses = addressRepository.findAddressByPerson(person);
         if(addresses.isEmpty())
         {
-            throw new EmptyCollectionException("The person does not have registered addresses");
+            throw new EmptyCollectionException(person);
         }
         return addresses;
     }
 
-    public Address findBy_id(Long addressId){
+    public Address findById(Long addressId){
         return addressRepository.findById(addressId)
                 .orElseThrow(() -> new AddressNotFoundException(addressId));
     }
