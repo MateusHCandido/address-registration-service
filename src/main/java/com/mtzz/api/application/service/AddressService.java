@@ -38,12 +38,9 @@ public class AddressService {
     public Address addAddress(AddressRequest addressRequest)
     {
         Address address = AddressMapper.toAddress(addressRequest);
-        if(checkIfAddressExists(addressRequest))
-        {
-            addressRepository.save(address);
-            return address;
-        }
-        throw new AddressCreationFailureException("Unexpected address creation failure");
+        checkIfAddressExists(addressRequest);
+        addressRepository.save(address);
+        return address;
     }
 
     //standby
