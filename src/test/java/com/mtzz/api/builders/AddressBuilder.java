@@ -6,8 +6,8 @@ import com.mtzz.api.application.controller.DTO.request.AddressRequest;
 public class AddressBuilder
 {
     private AddressRequest address;
-
     private AddressBuilder(){}
+
 
     public static AddressBuilder generateAddress()
     {
