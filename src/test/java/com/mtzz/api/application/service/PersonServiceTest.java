@@ -224,6 +224,21 @@ public class PersonServiceTest
     }
 
 
+    @Test(expected = AddressAlreadyRegisteredException.class)
+    public void should_return_which_address_has_already_been_registered_when_trying_to_add_address_in_person()
+    {
+        PersonRequest personRequest = PersonBuilder.generatePerson().now();
+        AddressRequest addressRequest = AddressBuilder.generateAddress().now();
+        Person person = service.addPerson(personRequest);
+        Address address = addressService.addAddress(addressRequest);
+
+        when(personRepository.findById(person.getPersonId())).thenReturn(Optional.of(person));
+        when(addressRepository.findById(address.getAddressId())).thenReturn(Optional.of(address));
+        service.addAddressInPerson(person.getPersonId(), address.getAddressId());
+        service.addAddressInPerson(person.getPersonId(), address.getAddressId());
+    }
+
+
     @Test(expected = AddressNotFoundException.class)
     public void should_return_address_not_located_when_adding_address_in_person()
     {
@@ -260,7 +275,7 @@ public class PersonServiceTest
     }
 
 
-    @Test(expected = AddressNotFoundException.class)
+    @Test(expected = NoAddressRegisteredException.class)
     public void should_return_error_address_not_found_when_trying_to_add_a_primary_address_to_person()
     {
         PersonRequest personRequest = PersonBuilder.generatePerson().now();
