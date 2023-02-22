@@ -12,6 +12,7 @@ public class PersonMapper extends DataFormat {
     @SneakyThrows
     public static Person toPerson(PersonRequest request) {
         Person person = new Person();
+        person.setPersonId(request.getPersonId());
         person.setName(name_format(request.getName()));
         person.setBirthDate(date_format(request.getBirthDate()));
         return person;

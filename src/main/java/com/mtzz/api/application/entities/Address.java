@@ -1,15 +1,12 @@
 package com.mtzz.api.application.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address
@@ -35,4 +32,17 @@ public class Address
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     private Person person;
+
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "addressId=" + addressId +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", cep='" + cep + '\'' +
+                ", number='" + number + '\'' +
+                ", city='" + city + '\'' +
+                ", person=" + person +
+                '}';
+    }
 }

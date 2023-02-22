@@ -16,6 +16,6 @@ public class AddressRequest extends DataFormat
     private String cep;
     private String number;
     private String city;
-    private Long personId;
+    //private Long personId; //remove
 }
 

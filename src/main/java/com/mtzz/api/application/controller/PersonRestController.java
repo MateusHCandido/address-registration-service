@@ -2,7 +2,6 @@ package com.mtzz.api.application.controller;
 
 import com.mtzz.api.application.controller.DTO.request.PersonRequest;
 import com.mtzz.api.application.entities.Person;
-import com.mtzz.api.application.mapper.PersonMapper;
 import com.mtzz.api.application.service.PersonService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,38 +22,45 @@ public class PersonRestController
 
     @SneakyThrows
     @PostMapping(path = "/add")
-    public ResponseEntity<Person> addPerson(@RequestBody PersonRequest person_request)
+    public ResponseEntity<Person> addPerson(@RequestBody PersonRequest personRequest)
     {
-         Person person = PersonMapper.toPerson(person_request);
-         personService.addPerson(person);
+        Person person = personService.addPerson(personRequest);
          return ResponseEntity.status(HttpStatus.CREATED).body(person);
     }
 
-    @GetMapping(path = "/find-by-id/{person_id}")
-    public ResponseEntity<Object> findById(@PathVariable Long person_id)
+    @GetMapping(path = "/find-by-id/{personId}")
+    public ResponseEntity<Object> findById(@PathVariable Long personId)
     {
-        Object person_localized = personService.findById(person_id);
-        return ResponseEntity.ok().body(person_localized);
+        Object personLocalized = personService.findById(personId);
+        return ResponseEntity.ok().body(personLocalized);
     }
 
     @GetMapping
     public ResponseEntity<List<Person>> findAll()
     {
-        return ResponseEntity.ok(personService.find_all());
+        return ResponseEntity.ok(personService.findAll());
     }
 
-    @PutMapping(path = "/update-data/{person_id}")
-    public ResponseEntity<Person> updatePersonData(@PathVariable Long person_id, @RequestBody PersonRequest personRequest)
+    @PutMapping(path = "/update-data/{personId}")
+    public ResponseEntity<Person> updatePersonData(@PathVariable Long personId, @RequestBody PersonRequest personRequest)
     {
-        personService.updateDataPerson(personRequest, person_id);
+        personService.updateDataPerson(personRequest, personId);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(path = "/person-id/{person_id}/address-id/{pa_id}")
-    public ResponseEntity<Person> enterPrimaryAddress(@PathVariable Long person_id, @PathVariable Long pa_id)
+    @PutMapping(path = "/register-address/{addressId}/to/{personId}")
+    public ResponseEntity<Person> addAddressInPerson( @PathVariable Long addressId, @PathVariable Long personId)
     {
-        personService.enterPrimaryAddress(person_id, pa_id);
+        personService.addAddressInPerson(personId, addressId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(path = "/person-id/{personId}/address-id/{paId}")
+    public ResponseEntity<Person> enterPrimaryAddress(@PathVariable Long personId, @PathVariable Long paId)
+    {
+        personService.enterMainAddress(personId, paId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
