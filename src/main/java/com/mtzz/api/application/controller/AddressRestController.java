@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 @RestController
@@ -22,14 +20,16 @@ public class AddressRestController
     @PostMapping(path = "/add")
     public ResponseEntity<Address> addAddress(@RequestBody AddressRequest addressRequest)
     {
+        Address address = addressService.addAddress(addressRequest);
+        //wait response
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(addressService.addAddress(addressRequest));
+                .body(address);
     }
 
 
     @GetMapping(path = "/person-id/{person_id}")
     public ResponseEntity<List<Address>> personsAddress(@PathVariable Long person_id)
     {
-        return ResponseEntity.ok().body(addressService.persons_addresses(person_id));
+        return ResponseEntity.ok().body(addressService.personsAddresses(person_id));
     }
 }
